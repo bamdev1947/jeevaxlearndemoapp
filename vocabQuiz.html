@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Quiz</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .quiz-container {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+        }
+        .correct { color: green; font-weight: bold; }
+        .incorrect { color: red; font-weight: bold; }
+        .button-container {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            color: #333;
+            font-size: 16px;
+        }
+        .next { background-color: #28a745;     color: white;}
+        .prev { background-color: #ffc107;     color: white; }
+        .reset { background-color: #dc3545;     color: white;}
+        button:hover {
+            opacity: 0.8;
+        }
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: white;
+            color: #4b6cb7;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .back-button:hover {
+            background: #6a11cb;
+            color: white;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Vocabulary Quiz</h2>
+        <div class="quiz-container" id="quizContainer"></div>
+        <div class="button-container">
+            <button class="prev" onclick="prevPage()">Previous</button>
+            <button class="next" onclick="nextPage()">Next</button>
+            <button class="reset" onclick="resetQuiz()">Reset</button>
+            
+        </div>
+        <a href="index.html" class="back-button">Home</a>
+
+    </div>
+
+    <script>
+        let questions = [
+          { type: "word", question: "a__surd", options: ["absurd", "abserd", "absard"], answer: "absurd" },
+            { type: "word", question: "b__zarre", options: ["bizarre", "bizzarre", "bizare"], answer: "bizarre" },
+            { type: "word", question: "c__nundrum", options: ["conundrum", "connundrum", "conandrum"], answer: "conundrum" },
+        ];
+
+  
+
+        let currentPage = 0;
+const questionsPerPage = 5;
+
+function displayQuestions() {
+    let quizContainer = document.getElementById("quizContainer");
+    quizContainer.innerHTML = "";
+
+    let start = currentPage * questionsPerPage;
+    let end = start + questionsPerPage;
+    let questionsToShow = questions.slice(start, end);
+
+    questionsToShow.forEach((q, index) => {
+        let div = document.createElement("div");
+        div.classList.add("question");
+        div.innerHTML = `<h4>${q.question}</h4>`;
+
+        if (q.type === "word") {
+            q.options.forEach(option => {
+                div.innerHTML += `<button onclick="checkAnswer(${start + index}, '${option}', this)">${option}</button>`;
+            });
+        } else {
+            div.innerHTML += `<button onclick="checkAnswer(${start + index}, true, this)">True</button>
+                              <button onclick="checkAnswer(${start + index}, false, this)">False</button>`;
+        }
+        quizContainer.appendChild(div);
+    });
+}
+
+function checkAnswer(index, selected, button) {
+    let correct = questions[index].answer;
+    if (selected === correct) {
+        button.classList.add("correct");
+    } else {
+        button.classList.add("incorrect");
+    }
+}
+
+function nextPage() {
+    if ((currentPage + 1) * questionsPerPage < questions.length) {
+        currentPage++;
+        displayQuestions();
+    }
+}
+
+function prevPage() {
+    if (currentPage > 0) {
+        currentPage--;
+        displayQuestions();
+    }
+}
+
+function resetQuiz() {
+    currentPage = 0;
+    displayQuestions();
+}
+
+// Initialize the quiz with the first 5 questions
+displayQuestions();
+
+    </script>
+</body>
+</html>

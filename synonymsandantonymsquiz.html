@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synonyms & Antonyms Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-blue-300 to-purple-400 flex flex-col items-center justify-center h-screen">
+    <header class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-4 text-center text-2xl font-bold shadow-md">
+        Synonyms & Antonyms Quiz
+    </header>
+    <div class="mb-4 mt-6">
+        <label for="letterFilter" class="font-semibold text-white">Filter by Letter:</label>
+        <select id="letterFilter" class="p-2 border rounded" onchange="filterQuestions()">
+            <option value="all">All</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+            <option value="G">G</option>
+            <option value="H">H</option>
+            <option value="I">I</option>
+            <option value="J">J</option>
+            <option value="K">K</option>
+            <option value="L">L</option>
+            <option value="M">M</option>
+            <option value="N">N</option>
+            <option value="O">O</option>
+            <option value="P">P</option>
+            <option value="Q">Q</option>
+            <option value="R">R</option>
+            <option value="S">S</option>
+            <option value="T">T</option>
+            <option value="U">U</option>
+            <option value="V">V</option>
+            <option value="W">W</option>
+            <option value="X">X</option>
+            <option value="Y">Y</option>
+            <option value="Z">Z</option>        </select>
+    </div>
+    <div class="quiz-container bg-white p-6 rounded-lg shadow-lg w-96 text-center">
+        <h2 id="question" class="text-xl font-semibold mb-4">Loading question...</h2>
+        <div>
+            <h3 class="text-lg font-medium mb-2">Synonyms</h3>
+            <div id="synonyms" class="space-y-2 mb-4"></div>
+            <h3 class="text-lg font-medium mb-2">Antonyms</h3>
+            <div id="antonyms" class="space-y-2"></div>
+        </div>
+        <div class="flex justify-between mt-4">
+            <button onclick="prevQuestion()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Prev</button>
+            <button onclick="nextQuestion()" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Next</button>
+            <button class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">        <a href="index.html" class="back-button">Home</a>
+            </button>
+
+        </div>
+    </div>
+    
+    <script>
+        const wordsData = {
+           "A": [
+    { "word": "Abundant", "synonyms": "Plentiful, Ample", "antonyms": "Scarce, Limited" },
+    { "word": "Accurate", "synonyms": "Correct, Precise", "antonyms": "Incorrect, Inaccurate" },
+    { "word": "Active", "synonyms": "Energetic, Lively", "antonyms": "Inactive, Lazy" },
+    { "word": "Adventurous", "synonyms": "Daring, Brave", "antonyms": "Cautious, Timid" },
+    { "word": "Affectionate", "synonyms": "Loving, Warm", "antonyms": "Cold, Indifferent" },
+    { "word": "Aggressive", "synonyms": "Hostile, Forceful", "antonyms": "Passive, Gentle" },
+    { "word": "Alert", "synonyms": "Watchful, Attentive", "antonyms": "Unaware, Oblivious" },
+    { "word": "Ambitious", "synonyms": "Aspiring, Determined", "antonyms": "Lazy, Unmotivated" },
+    { "word": "Amusing", "synonyms": "Entertaining, Funny", "antonyms": "Boring, Dull" },
+    { "word": "Ancient", "synonyms": "Old, Historic", "antonyms": "Modern, New" },
+    { "word": "Angry", "synonyms": "Mad, Furious", "antonyms": "Calm, Peaceful" },
+    { "word": "Anxious", "synonyms": "Worried, Nervous", "antonyms": "Relaxed, Confident" },
+    { "word": "Appreciative", "synonyms": "Grateful, Thankful", "antonyms": "Ungrateful, Indifferent" },
+    { "word": "Arrogant", "synonyms": "Proud, Haughty", "antonyms": "Humble, Modest" },
+    { "word": "Artistic", "synonyms": "Creative, Imaginative", "antonyms": "Unimaginative, Uncreative" },
+    { "word": "Attractive", "synonyms": "Beautiful, Appealing", "antonyms": "Unattractive, Ugly" },
+    { "word": "Authentic", "synonyms": "Genuine, Real", "antonyms": "Fake, False" },
+    { "word": "Available", "synonyms": "Accessible, Obtainable", "antonyms": "Unavailable, Unreachable" },
+    { "word": "Awkward", "synonyms": "Clumsy, Uncomfortable", "antonyms": "Graceful, Comfortable" },
+    { "word": "Awesome", "synonyms": "Impressive, Amazing", "antonyms": "Ordinary, Unremarkable" }
+]
+
+
+        };
+
+        let wordsList = Object.values(wordsData).flat();
+        let currentQuestionIndex = 0;
+
+        function loadQuestion() {
+            document.getElementById("synonyms").innerHTML = "";
+            document.getElementById("antonyms").innerHTML = "";
+            const questionData = wordsList[currentQuestionIndex];
+            document.getElementById("question").innerText = `Select the correct synonym and antonym of "${questionData.word}"`;
+            
+            let synonyms = questionData.synonyms.split(", ");
+            let antonyms = questionData.antonyms.split(", ");
+            
+            synonyms.forEach(option => {
+                let btn = document.createElement("button");
+                btn.innerText = option;
+                btn.classList.add("block", "w-full", "py-2", "border", "rounded", "cursor-pointer", "hover:bg-gray-200");
+                btn.onclick = () => checkAnswer(btn, synonyms);
+                document.getElementById("synonyms").appendChild(btn);
+            });
+            
+            antonyms.forEach(option => {
+                let btn = document.createElement("button");
+                btn.innerText = option;
+                btn.classList.add("block", "w-full", "py-2", "border", "rounded", "cursor-pointer", "hover:bg-gray-200");
+                btn.onclick = () => checkAnswer(btn, antonyms);
+                document.getElementById("antonyms").appendChild(btn);
+            });
+        }
+
+        function checkAnswer(btn, correctAnswers) {
+            if (correctAnswers.includes(btn.innerText)) {
+                btn.classList.add("bg-green-500", "text-white");
+            } else {
+                btn.classList.add("bg-red-500", "text-white");
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < wordsList.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            }
+        }
+
+        function filterQuestions() {
+            let selectedLetter = document.getElementById("letterFilter").value;
+            if (selectedLetter === "all") {
+                wordsList = Object.values(wordsData).flat();
+            } else {
+                wordsList = wordsData[selectedLetter] || [];
+            }
+            currentQuestionIndex = 0;
+            loadQuestion();
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Learning Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #0f50e9, #fad0c4);
+            margin: 0;
+            padding: 0;
+            color: white;
+        }
+        .container {
+            max-width: 90%;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        h1, h4 {
+            color: #fff;
+            margin-bottom: 5%;
+        }
+        .grid {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .card {
+            background: linear-gradient(135deg, #42e695, #3bb2b8);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            transition: 0.3s;
+            flex: 1 1 150px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .card:hover {
+            background: #ff6f61;
+        }
+        .footer {
+            margin-top: 50px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            text-align: center;
+        }
+        .icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+        .social-links a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .social-links a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 600px) {
+            .grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            .card {
+                width: 80%;
+                font-size: 16px;
+                padding: 30px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+    <script>
+        function toggleFooter() {
+            var content = document.getElementById("footerContent");
+            content.style.display = content.style.display === "block" ? "none" : "block";
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to JeevaxLearn Demo APP </h1>
+      
+        <h4>Practice Section</h4>
+        <div class="grid">
+            <a href="vocab.html" class="card"><div class="icon">📖</div>Vocab Practice</a>
+            <a href="rootword.html" class="card"><div class="icon">🌱</div>Rootwords Practice</a>
+            <a href="onewordsubstitue.html" class="card"><div class="icon">🎯</div>One Word Substitute</a>
+            <a href="synonymsAntonymsapp.html" class="card"><div class="icon">🔄</div>Synonyms & Antonyms</a>
+            <a href="idiomandphrases.html" class="card"><div class="icon">💡</div>Idioms & Phrases</a>
+        </div>
+        
+        <h4>Quiz Section</h4>
+        <div class="grid">
+            <a href="grammar.html" class="card"><div class="icon">✍️</div>Grammar Quiz</a>
+            <a href="vocabQuiz.html" class="card"><div class="icon">🧠</div>Vocab Quiz</a>
+            <a href="oddoneoutquiz.html" class="card"><div class="icon">🔍</div>Odd One Out Quiz</a>
+            <a href="sentence.html" class="card"><div class="icon">📝</div>Sentence Correction</a>
+            <a href="synonymsandantonymsquiz.html" class="card"><div class="icon">📚</div>Synonyms & Antonyms</a>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>&copy; 2025 JeevaxLearn. All Rights Reserved.</p>
+        <p>Contact us on WhatsApp if you need new feature: <a href="https://wa.me/9938731833" style="color: white; text-decoration: none;">+919938731833</a></p>
+        <p>Mail us on Email if you have any query or you need new feature (jeevaxlearn@gmail.com)</p>
+        <div class="social-links">
+            <a href="https://facebook.com" target="_blank">Facebook</a> |
+            <a href="https://instagram.com" target="_blank">Instagram</a>
+        </div>
+    </div>
+</body>
+</html>

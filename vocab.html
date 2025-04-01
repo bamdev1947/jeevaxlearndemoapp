@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VocabEase</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(120deg, #f4f5f9, #e0e6f0);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items
+
+: center;
+    padding: 10px;
+}
+
+.app-wrapper {
+    background: white;
+    width: 100%;
+    max-width: 850px;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.app-header {
+    background: linear-gradient(90deg, #7b2cbf, #3a86ff);
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+.app-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.app-header p {
+    font-size: 1rem;
+    font-weight: 300;
+    opacity: 0.9;
+}
+
+.filter-section {
+    padding: 15px 20px;
+    background: #fafafa;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #e8ecef;
+}
+
+.filter-section label {
+    font-size: 1.1rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.filter-section select {
+    padding: 8px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #e0e0e0;
+    background: white;
+    cursor: pointer;
+}
+
+.progress-section {
+    padding: 15px 20px;
+    background: #fafafa;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#progressText {
+    font-size: 1.1rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.progress-bar {
+    flex-grow: 1;
+    height: 10px;
+    background: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, #7b2cbf, #3a86ff);
+    border-radius: 5px;
+    transition: width 0.4s ease;
+}
+
+.word-container {
+    padding: 20px;
+    max-height: 55vh;
+    overflow-y: auto;
+}
+
+.word-item {
+    background: linear-gradient(135deg, #fdfdfd, #f7f8fa);
+    border: 1px solid #e8ecef;
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 5px;
+    transition: transform 0.2s ease;
+}
+
+.word-item:hover {
+    transform: translateY(-2px);
+}
+
+.word-item h2 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #7b2cbf;
+    margin-bottom: 10px;
+}
+
+.word-item p {
+    font-size: 0.8rem;
+    color: #444;
+    line-height: 1.5;
+    margin: 5px 0;
+}
+
+.word-item .label {
+    font-weight: 500;
+    color: #3a86ff;
+}
+
+.navigation {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    background: #fafafa;
+    border-top: 1px solid #e8ecef;
+}
+
+.nav-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: white;
+    background: linear-gradient(90deg, #7b2cbf, #3a86ff);
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.nav-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.nav-btn:hover:not(:disabled) {
+    background: linear-gradient(90deg, #5a189a, #1e6091);
+    transform: scale(1.05);
+}
+
+.nav-btn span {
+    font-size: 1.2rem;
+}
+
+@media (max-width: 600px) {
+    .app-wrapper {
+        padding: 10px;
+    }
+    .app-header h1 {
+        font-size: 1.5rem;
+    }
+    .word-item h2 {
+        font-size: 1.2rem;
+    }
+    .word-item p {
+        font-size: 0.9rem;
+    }
+}
+.back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: white;
+            color: #4b6cb7;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .back-button:hover {
+            background: #6a11cb;
+            color: white;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-wrapper">
+        <header class="app-header">
+            <h1>VocabEase</h1>
+            <p>Learn 700 Words with Ease</p>
+        </header>
+        <div class="filter-section">
+            <label for="letterFilter">Filter by Letter:</label>
+            <select id="letterFilter">
+                <option value="all">All Letters</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="G">G</option>
+                <option value="H">H</option>
+                <option value="I">I</option>
+                <option value="J">J</option>
+                <option value="K">K</option>
+                <option value="L">L</option>
+                <option value="M">M</option>
+                <option value="N">N</option>
+                <option value="O">O</option>
+                <option value="P">P</option>
+                <option value="Q">Q</option>
+                <option value="R">R</option>
+                <option value="S">S</option>
+                <option value="T">T</option>
+                <option value="U">U</option>
+                <option value="V">V</option>
+                <option value="W">W</option>
+                <option value="X">X</option>
+                <option value="Y">Y</option>
+                <option value="Z">Z</option>
+            </select>
+        </div>
+        <div class="progress-section">
+            <span id="progressText">0/2000 Words</span>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+        <main class="word-container" id="wordContainer"></main>
+        <footer class="navigation">
+            <button id="prevBtn" class="nav-btn" disabled><span>←</span> Previous</button>
+            <button id="nextBtn" class="nav-btn">Next <span>→</span></button>
+        </footer>
+        <a href="index.html" class="back-button">Home</a>
+
+    </div>
+    <script>
+
+const vocabulary = [
+    // A
+    { word: "Abate", description: "To reduce in intensity", hindiDescription: "तीव्रता कम करना", synonyms: ["decrease", "lessen"], sentence: "The rain began to abate after hours." },
+    { word: "Adapt", description: "To adjust to new conditions", hindiDescription: "अनुकूलन करना", synonyms: ["adjust", "modify"], sentence: "She adapted quickly to the climate." },
+    { word: "Adept", description: "Highly skilled", hindiDescription: "निपुण", synonyms: ["expert", "proficient"], sentence: "He’s adept at solving puzzles." },
+    { word: "Adore", description: "To love deeply", hindiDescription: "प्यार करना", synonyms: ["cherish", "worship"], sentence: "They adore their new puppy." },
+    { word: "Alert", description: "Quick to notice danger", hindiDescription: "सतर्क", synonyms: ["vigilant", "aware"], sentence: "The guard stayed alert all night." },
+    { word: "Ample", description: "More than enough", hindiDescription: "पर्याप्त", synonyms: ["sufficient", "plenty"], sentence: "We have ample time to prepare." },
+    { word: "Astonish", description: "To surprise greatly", hindiDescription: "आश्चर्यचकित करना", synonyms: ["amaze", "stun"], sentence: "Her talent astonished everyone." },
+    { word: "Attain", description: "To achieve or reach", hindiDescription: "प्राप्त करना", synonyms: ["gain", "accomplish"], sentence: "He attained his goals through effort." },
+    { word: "Avert", description: "To prevent or turn away", hindiDescription: "टालना", synonyms: ["avoid", "deflect"], sentence: "She averted a crisis with quick thinking." },
+    { word: "Awake", description: "Not asleep", hindiDescription: "जागना", synonyms: ["alert", "conscious"], sentence: "He stayed awake to finish the task." },
+   
+]
+
+const wordsPerPage = 20;
+let currentPage = 0;
+let currentFilter = "all";
+
+const wordContainer = document.getElementById("wordContainer");
+const progressText = document.getElementById("progressText");
+const progressFill = document.getElementById("progressFill");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const letterFilter = document.getElementById("letterFilter");
+
+function getFilteredWords() {
+    if (currentFilter === "all") return vocabulary;
+    return vocabulary.filter(word => word.word.toUpperCase().startsWith(currentFilter));
+}
+
+function renderWords() {
+    const filteredWords = getFilteredWords();
+    wordContainer.innerHTML = "";
+    const start = currentPage * wordsPerPage;
+    const end = Math.min(start + wordsPerPage, filteredWords.length);
+
+    for (let i = start; i < end; i++) {
+        const word = filteredWords[i];
+        const wordItem = document.createElement("div");
+        wordItem.className = "word-item";
+        wordItem.innerHTML = `
+            <h2>${word.word}</h2>
+            <p><span class="label">Description:</span> ${word.description}</p>
+            <p><span class="label">Hindi:</span> ${word.hindiDescription}</p>
+            <p><span class="label">Synonyms:</span> ${word.synonyms.join(", ")}</p>
+            <p><span class="label">Example:</span> ${word.sentence}</p>
+        `;
+        wordContainer.appendChild(wordItem);
+    }
+
+    updateProgress(filteredWords);
+    updateNavigation(filteredWords);
+}
+
+function updateProgress(filteredWords) {
+    const viewedWords = Math.min((currentPage + 1) * wordsPerPage, filteredWords.length);
+    progressText.textContent = `${viewedWords}/${filteredWords.length} Words`;
+    const progressPercent = filteredWords.length > 0 ? (viewedWords / filteredWords.length) * 100 : 0;
+    progressFill.style.width = `${progressPercent}%`;
+}
+
+function updateNavigation(filteredWords) {
+    prevBtn.disabled = currentPage === 0;
+    nextBtn.disabled = (currentPage + 1) * wordsPerPage >= filteredWords.length;
+}
+
+prevBtn.addEventListener("click", () => {
+    if (currentPage > 0) {
+        currentPage--;
+        renderWords();
+    }
+});
+
+nextBtn.addEventListener("click", () => {
+    const filteredWords = getFilteredWords();
+    if ((currentPage + 1) * wordsPerPage < filteredWords.length) {
+        currentPage++;
+        renderWords();
+    }
+});
+
+letterFilter.addEventListener("change", (e) => {
+    currentFilter = e.target.value;
+    currentPage = 0; // Reset to first page on filter change
+    renderWords();
+});
+
+// Initial render
+renderWords();
+    </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Word Substitution</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-blue-500 to-purple-600 relative">
+    <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-2xl text-center">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">One Word Substitution</h1>
+        <table class="w-full border-collapse border border-gray-300 shadow-lg">
+            <thead>
+                <tr class="bg-gradient-to-r from-purple-400 to-blue-400 text-white">
+                    <th class="border border-gray-300 p-3">Phrase</th>
+                    <th class="border border-gray-300 p-3">One Word</th>
+                </tr>
+            </thead>
+            <tbody id="table-body" class="text-gray-700 bg-gray-100">
+            </tbody>
+        </table>
+        <div class="flex justify-between mt-6">
+            <button onclick="prevPage()" class="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition">Previous</button>
+            <button onclick="nextPage()" class="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition">Next</button>
+            <button class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">        <a href="index.html" class="back-button">Home</a>
+        </div>
+    </div>
+    <footer class="absolute bottom-4 text-white text-sm">© 2025 JeevaxLearn. All rights reserved.</footer>
+    
+    <script>
+        const data = [
+            ["A person who writes a book", "Author"],
+            ["A person who speaks many languages", "Polyglot"],
+           
+        ];
+        
+        let currentPage = 0;
+        const rowsPerPage = 10;
+        
+        function renderTable() {
+            const tbody = document.getElementById("table-body");
+            tbody.innerHTML = "";
+            const start = currentPage * rowsPerPage;
+            const end = start + rowsPerPage;
+            
+            data.slice(start, end).forEach(([phrase, word]) => {
+                const row = `<tr><td class='border border-gray-300 p-3'>${phrase}</td><td class='border border-gray-300 p-3'>${word}</td></tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+        
+        function nextPage() {
+            if ((currentPage + 1) * rowsPerPage < data.length) {
+                currentPage++;
+                renderTable();
+            }
+        }
+        
+        function prevPage() {
+            if (currentPage > 0) {
+                currentPage--;
+                renderTable();
+            }
+        }
+        
+        renderTable();
+    </script>
+</body>
+</html>

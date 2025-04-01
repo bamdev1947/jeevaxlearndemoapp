@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odd One Out</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center h-screen bg-yellow-100">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96 text-center border-4 border-yellow-400">
+        <h2 class="text-2xl font-bold mb-4 text-yellow-600">🎉 Find the Odd One Out! 🎈</h2>
+        <div id="words" class="grid grid-cols-2 gap-4 mb-4">
+            <!-- Words will be inserted here dynamically -->
+        </div>
+        <p id="message" class="text-lg font-semibold text-gray-700"></p>
+        <div class="flex justify-between mt-4">
+            <button onclick="prevGame()" class="px-4 py-2 bg-gray-400 text-white rounded-lg disabled:opacity-50" id="prevBtn" disabled>⬅️ Prev</button>
+            <button onclick="nextGame()" class="px-4 py-2 bg-blue-500 text-white rounded-lg" id="nextBtn">Next ➡️</button>
+            <button class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">        <a href="index.html" class="back-button">Home</a>
+
+        </div>
+    </div>
+
+    <script>
+        const wordSets = [
+  { "words": ["🍎 Apple", "🍌 Banana", "🥕 Carrot", "🍓 Strawberry"], "odd": "🥕 Carrot" },
+  { "words": ["🚗 Car", "🚕 Taxi", "✈️ Airplane", "🚙 SUV"], "odd": "✈️ Airplane" },
+ 
+]
+
+        
+        let currentIndex = 0;
+        
+        function loadGame(index) {
+            const gameArea = document.getElementById("words");
+            const message = document.getElementById("message");
+            const prevBtn = document.getElementById("prevBtn");
+            const nextBtn = document.getElementById("nextBtn");
+            
+            message.textContent = "";
+            gameArea.innerHTML = "";
+            
+            const set = wordSets[index];
+            set.words.forEach(word => {
+                const button = document.createElement("button");
+                button.textContent = word;
+                button.classList = "px-4 py-2 bg-yellow-200 rounded-lg hover:bg-yellow-300 text-lg font-semibold";
+                button.onclick = () => checkAnswer(word, set.odd);
+                gameArea.appendChild(button);
+            });
+            
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === wordSets.length - 1;
+        }
+        
+        function checkAnswer(selected, correct) {
+            const message = document.getElementById("message");
+            if (selected === correct) {
+                message.textContent = "🎉✅ Correct! Great Job!";
+                message.classList.add("text-green-600");
+            } else {
+                message.textContent = "😢❌ Try Again!";
+                message.classList.add("text-red-600");
+            }
+        }
+        
+        function nextGame() {
+            if (currentIndex < wordSets.length - 1) {
+                currentIndex++;
+                loadGame(currentIndex);
+            }
+        }
+        
+        function prevGame() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadGame(currentIndex);
+            }
+        }
+        
+        loadGame(currentIndex);
+    </script>
+</body>
+</html>

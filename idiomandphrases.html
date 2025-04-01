@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idioms & Phrases</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 1% 20%;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            cursor: pointer;
+        }
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .pagination button {
+            margin: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .pagination button:hover {
+            background: linear-gradient(135deg, #5563c1, #5b3c82);
+        }
+        #searchBar {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .highlight {
+            background-color: yellow;
+        }
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: white;
+            color: #4b6cb7;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .back-button:hover {
+            background: #6a11cb;
+            color: white;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <h2>Idioms & Phrases</h2>
+    <input type="text" id="searchBar" onkeyup="searchIdioms()" placeholder="Search idioms...">
+    <table id="idiomsTable">
+        <thead>
+            <tr>
+                <th onclick="sortTable()">Idiom</th>
+                <th>Meaning</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <div class="pagination">
+        <button onclick="prevPage()">Previous</button>
+        <span id="pageInfo"></span>
+        <button onclick="nextPage()">Next</button>
+        <a href="index.html" class="back-button">Home</a>
+
+    </div>
+    <script>
+        let idioms = [
+            { idiom: "Rank and File", meaning: "Ordinary People" },
+            { idiom: "By fits and starts", meaning: "In short periods, not regularly" },
+        ];
+
+        let currentPage = 1;
+        const recordsPerPage = 10;
+
+        function displayTable(filteredIdioms = idioms) {
+            const tbody = document.querySelector("#idiomsTable tbody");
+            tbody.innerHTML = "";
+            
+            let start = (currentPage - 1) * recordsPerPage;
+            let end = start + recordsPerPage;
+            let paginatedItems = filteredIdioms.slice(start, end);
+            
+            paginatedItems.forEach(item => {
+                let row = `<tr><td>${item.idiom}</td><td>${item.meaning}</td></tr>`;
+                tbody.innerHTML += row;
+            });
+            
+            document.getElementById("pageInfo").innerText = `Page ${currentPage} of ${Math.ceil(filteredIdioms.length / recordsPerPage)}`;
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                displayTable();
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < Math.ceil(idioms.length / recordsPerPage)) {
+                currentPage++;
+                displayTable();
+            }
+        }
+
+        function sortTable() {
+            idioms.sort((a, b) => a.idiom.localeCompare(b.idiom));
+            displayTable();
+        }
+
+        function searchIdioms() {
+            let input = document.getElementById("searchBar").value.toLowerCase();
+            let filteredIdioms = idioms.filter(item => item.idiom.toLowerCase().includes(input));
+            displayTable(filteredIdioms);
+        }
+
+        displayTable();
+    </script>
+</body>
+</html>

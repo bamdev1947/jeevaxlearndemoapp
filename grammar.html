@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar Quiz Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: #333;
+}
+
+/* Container Styling */
+.container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 700px;
+    transition: transform 0.3s ease;
+}
+
+.container:hover {
+    transform: translateY(-5px);
+}
+
+/* Header Styling */
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #2a5298;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Dashboard Styling */
+.dashboard {
+    text-align: center;
+}
+
+.dashboard h2 {
+    font-size: 1.8rem;
+    color: #1e3c72;
+    margin-bottom: 20px;
+}
+
+.topics {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.topic-btn {
+    padding: 15px 25px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #fff;
+    background: linear-gradient(90deg, #2a5298, #1e3c72);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.topic-btn:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(90deg, #1e3c72, #2a5298);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Quiz Container Styling */
+.quiz-container h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #2a5298;
+    margin-bottom: 20px;
+}
+
+#score {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff;
+    background: #2a5298;
+    padding: 10px;
+    border-radius: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.question {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #1e3c72;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f7f9fc;
+    border-radius: 10px;
+    border-left: 5px solid #2a5298;
+}
+
+.option {
+    display: block;
+    padding: 15px;
+    margin: 10px 0;
+    background: #fff;
+    border: 2px solid #e0e6ed;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.option:hover {
+    background: #e0e6ed;
+    border-color: #2a5298;
+    transform: translateX(5px);
+}
+
+.correct {
+    background: linear-gradient(90deg, #28a745, #34c759);
+    color: #fff;
+    border-color: #28a745;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+}
+
+.incorrect {
+    background: linear-gradient(90deg, #dc3545, #ff5767);
+    color: #fff;
+    border-color: #dc3545;
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+}
+
+.explanation {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f0f4f8;
+    border: 2px dashed #2a5298;
+    border-radius: 10px;
+    font-size: 1rem;
+    color: #1e3c72;
+    line-height: 1.5;
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    flex: 1;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+#previous {
+    background: linear-gradient(90deg, #ff8c00, #ffa726);
+    color: #fff;
+}
+
+#previous:hover {
+    background: linear-gradient(90deg, #e07b00, #ff9500);
+}
+
+#next {
+    background: linear-gradient(90deg, #28a745, #34c759);
+    color: #fff;
+}
+
+#next:hover {
+    background: linear-gradient(90deg, #218838, #2ea44f);
+}
+
+#reset {
+    background: linear-gradient(90deg, #dc3545, #ff5767);
+    color: #fff;
+}
+
+#reset:hover {
+    background: linear-gradient(90deg, #c82333, #e84353);
+}
+
+#back {
+    background: linear-gradient(90deg, #6c757d, #adb5bd);
+    color: #fff;
+}
+
+#back:hover {
+    background: linear-gradient(90deg, #5a6268, #989fa6);
+}
+
+button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.performance {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: #fff;
+    background: #2a5298;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.5s ease;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .container {
+        width: 95%;
+        padding: 20px;
+    }
+    h1, .quiz-container h2 {
+        font-size: 2rem;
+    }
+    .dashboard h2 {
+        font-size: 1.5rem;
+    }
+    .topic-btn {
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+    .question {
+        font-size: 1.1rem;
+    }
+    .option {
+        font-size: 1rem;
+        padding: 12px;
+    }
+    button {
+        padding: 10px 15px;
+        font-size: 1rem;
+    }
+    .buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+   
+}
+.back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: white;
+            color: #4b6cb7;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .back-button:hover {
+            background: #6a11cb;
+            color: white;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Grammar Quiz Dashboard</h1>
+        <div id="dashboard" class="dashboard">
+            <h2>Select a Topic</h2>
+            <div id="topics" class="topics"></div>
+        </div>
+        <div id="quiz-container" class="quiz-container" style="display: none;">
+            <h2 id="quiz-title"></h2>
+            <div id="score">Score: 0 / 0</div>
+            <div id="quiz"></div>
+            <div id="explanation" class="explanation"></div>
+            <div class="buttons">
+                <button id="previous">Previous</button>
+                <button id="next">Next</button>
+                <button id="reset">Reset</button>
+                <button id="back">Back to Dashboard</button>
+            </div>
+            <div id="performance" class="performance"></div>
+        </div>
+        <a href="index.html" class="back-button">Home</a>
+
+    </div>
+    <script>
+
+
+        // Grammar Topics Data (Nouns and Pronouns for now, extensible for others)
+const grammarTopics = {
+    "Nouns": [
+    { "question": "What is a noun?", "options": ["A naming word", "An action word", "A describing word", "A connecting word"], "correct": "A naming word", "explanation": "A noun is a word that names a person, place, thing, or idea, making it a naming word." },
+    { "question": "Which of these is a proper noun?", "options": ["dog", "London", "happiness", "run"], "correct": "London", "explanation": "'London' is a proper noun because it names a specific place." },
+    ],
+  "Pronouns": [
+    { "question": "What is a pronoun?", "options": ["A word that replaces a noun", "A describing word", "An action word", "A naming word"], "correct": "A word that replaces a noun", "explanation": "A pronoun is a word used in place of a noun to avoid repetition." },
+    { "question": "Which of these is a personal pronoun?", "options": ["he", "who", "this", "mine"], "correct": "he", "explanation": "'He' is a personal pronoun used to refer to a male person." },
+    ],
+
+"Verbs": [
+    { question: "What is a verb?", options: ["A naming word", "An action or state word", "A describing word", "A connecting word"], correct: "An action or state word", explanation: "A verb shows what someone does (e.g., 'run') or a state of being (e.g., 'is'). It’s the action or existence part of a sentence!" },
+    { question: "Which is a verb?", options: ["dog", "barks", "loud", "table"], correct: "barks", explanation: "'Barks' is a verb because it shows action. 'Dog' and 'table' are nouns, 'loud' is an adjective." },
+    ],
+
+"Adjectives": [
+    { question: "What is an adjective?", options: ["A naming word", "An action word", "A describing word", "A connecting word"], correct: "A describing word", explanation: "An adjective describes a noun, telling us more about it—like 'big' or 'red.' It adds detail to make sentences colorful!" },
+    { question: "Which is an adjective?", options: ["dog", "runs", "soft", "quickly"], correct: "soft", explanation: "'Soft' is an adjective describing a noun (e.g., 'soft pillow'). 'Dog' is a noun, 'runs' is a verb, 'quickly' is an adverb." },
+    { question: "What does 'tall' describe in: 'The tall tree grows.'?", options: ["grows", "tree", "The", "none"], correct: "tree", explanation: "'Tall' describes 'tree,' telling its height. Adjectives modify nouns, not verbs ('grows') or articles ('The')." },
+    { question: "Which adjective compares two things?", options: ["big", "bigger", "biggest", "bigness"], correct: "bigger", explanation: "'Bigger' is comparative, comparing two things (e.g., 'This is bigger than that'). 'Big' is basic, 'biggest' is superlative." },
+    ],
+"Prepositions": [
+    { question: "What is a preposition?", options: ["A naming word", "A word showing action", "A word showing position", "A describing word"], correct: "A word showing position", explanation: "A preposition shows where or when something is, like 'on' in 'on the table.' It connects nouns to other words!" },
+    { question: "Which is a preposition?", options: ["cat", "in", "runs", "happy"], correct: "in", explanation: "'In' is a preposition showing location (e.g., 'in the box'). 'Cat' is a noun, 'runs' is a verb, 'happy' is an adjective." },
+    { question: "What does 'under' show in: 'The cat is under the bed.'?", options: ["Time", "Place", "Action", "Description"], correct: "Place", explanation: "'Under' shows where the cat is (below the bed), making it a preposition of place. It’s not time ('at') or action." },
+    ],
+"Conjunctions": [
+    { question: "What is a conjunction?", options: ["A naming word", "A word that connects", "An action word", "A describing word"], correct: "A word that connects", explanation: "A conjunction joins words or sentences, like 'and' in 'cats and dogs.' It’s like glue for ideas!" },
+    { question: "Which is a conjunction?", options: ["dog", "and", "runs", "soft"], correct: "and", explanation: "'And' is a conjunction connecting things (e.g., 'tea and coffee'). 'Dog' is a noun, 'runs' is a verb, 'soft' is an adjective." },
+   ],
+
+"Articles": [
+    { question: "What is an article?", options: ["A naming word", "A word before a noun", "An action word", "A connecting word"], correct: "A word before a noun", explanation: "An article ('a,' 'an,' 'the') comes before a noun to show if it’s specific or general, like 'the cat' or 'a dog.'" },
+    { question: "Which is an article?", options: ["dog", "the", "runs", "soft"], correct: "the", explanation: "'The' is an article used before a noun (e.g., 'the dog'). 'Dog' is a noun, 'runs' is a verb, 'soft' is an adjective." },
+    ],
+"Tenses": [
+    { question: "What does a tense show?", options: ["Place", "Time", "Action", "Description"], correct: "Time", explanation: "A tense shows when an action happens—past, present, or future—like 'walked' (past) or 'walks' (present)." },
+    { question: "Which tense is 'She walks'?", options: ["Past", "Present", "Future", "None"], correct: "Present", explanation: "'Walks' is simple present tense, showing an action happening now or regularly." },
+    { question: "What tense is 'He ran'?", options: ["Past", "Present", "Future", "None"], correct: "Past", explanation: "'Ran' is simple past tense, showing an action completed in the past." },
+]
+    // Add more topics like "Verbs", "Adjectives", etc., here in the same format
+};
+
+// DOM Elements
+const dashboard = document.getElementById("dashboard");
+const quizContainer = document.getElementById("quiz-container");
+const quizTitle = document.getElementById("quiz-title");
+const topicsDiv = document.getElementById("topics");
+const quizDiv = document.getElementById("quiz");
+const previousButton = document.getElementById("previous");
+const nextButton = document.getElementById("next");
+const resetButton = document.getElementById("reset");
+const backButton = document.getElementById("back");
+const scoreDisplay = document.getElementById("score");
+const explanationDiv = document.getElementById("explanation");
+const performanceDiv = document.getElementById("performance");
+
+let currentTopic = null;
+let currentQuestions = [];
+let currentQuestionIndex = 0;
+let score = 0;
+let totalAnswered = 0;
+
+// Load Dashboard
+function loadDashboard() {
+    dashboard.style.display = "block";
+    quizContainer.style.display = "none";
+    topicsDiv.innerHTML = "";
+    Object.keys(grammarTopics).forEach(topic => {
+        const button = document.createElement("button");
+        button.classList.add("topic-btn");
+        button.innerText = topic;
+        button.addEventListener("click", () => startQuiz(topic));
+        topicsDiv.appendChild(button);
+    });
+}
+
+// Start Quiz for Selected Topic
+function startQuiz(topic) {
+    currentTopic = topic;
+    currentQuestions = grammarTopics[topic];
+    currentQuestionIndex = 0;
+    score = 0;
+    totalAnswered = 0;
+    dashboard.style.display = "none";
+    quizContainer.style.display = "block";
+    quizTitle.innerText = `${topic} Quiz`;
+    loadQuestion(currentQuestionIndex);
+}
+
+// Load Question
+function loadQuestion(index) {
+    quizDiv.innerHTML = "";
+    explanationDiv.style.display = "none";
+    const item = currentQuestions[index];
+    const questionDiv = document.createElement("div");
+    questionDiv.classList.add("question");
+    questionDiv.innerHTML = `<strong>Q${index + 1}. ${item.question}</strong>`;
+
+    item.options.forEach(option => {
+        const optionDiv = document.createElement("div");
+        optionDiv.classList.add("option");
+        optionDiv.innerText = option;
+        optionDiv.addEventListener("click", () => checkAnswer(optionDiv, option, item.correct, item.explanation));
+        questionDiv.appendChild(optionDiv);
+    });
+
+    quizDiv.appendChild(questionDiv);
+    updateButtonStates();
+    updateScore();
+}
+
+// Check Answer
+function checkAnswer(selectedOption, selectedAnswer, correctAnswer, explanation) {
+    const options = selectedOption.parentElement.querySelectorAll(".option");
+    options.forEach(option => {
+        option.style.pointerEvents = "none";
+        if (option.innerText === correctAnswer) {
+            option.classList.add("correct");
+        }
+        if (option.innerText === selectedAnswer && selectedAnswer !== correctAnswer) {
+            option.classList.add("incorrect");
+        }
+    });
+    if (selectedAnswer === correctAnswer) score++;
+    totalAnswered++;
+    explanationDiv.innerText = explanation;
+    explanationDiv.style.display = "block";
+    nextButton.disabled = false;
+    updateScore();
+}
+
+// Update Score
+function updateScore() {
+    scoreDisplay.innerText = `Score: ${score} / ${totalAnswered}`;
+}
+
+// Update Button States
+function updateButtonStates() {
+    previousButton.disabled = currentQuestionIndex === 0;
+    nextButton.disabled = true;
+    nextButton.style.display = currentQuestionIndex === currentQuestions.length - 1 && totalAnswered === currentQuestions.length ? "none" : "block";
+}
+
+// Event Listeners
+previousButton.addEventListener("click", () => {
+    if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        loadQuestion(currentQuestionIndex);
+    }
+});
+
+nextButton.addEventListener("click", () => {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < currentQuestions.length) {
+        loadQuestion(currentQuestionIndex);
+    } else {
+        quizDiv.innerHTML = "<h2>Quiz Completed!</h2>";
+        nextButton.style.display = "none";
+        showPerformance();
+    }
+});
+
+resetButton.addEventListener("click", () => {
+    currentQuestionIndex = 0;
+    score = 0;
+    totalAnswered = 0;
+    nextButton.style.display = "block";
+    performanceDiv.innerText = "";
+    loadQuestion(currentQuestionIndex);
+});
+
+backButton.addEventListener("click", () => {
+    loadDashboard();
+});
+
+function showPerformance() {
+    const percentage = (score / currentQuestions.length) * 100;
+    let feedback = "";
+    if (percentage >= 80) {
+        feedback = `Excellent job! You have a strong grasp of ${currentTopic.toLowerCase()}.`;
+    } else if (percentage >= 50) {
+        feedback = `Good effort! Review some ${currentTopic.toLowerCase()} to improve.`;
+    } else {
+        feedback = `Keep practicing! Focus on understanding ${currentTopic.toLowerCase()} categories.`;
+    }
+    performanceDiv.innerText = `Final Score: ${score}/${currentQuestions.length} (${percentage.toFixed(2)}%) - ${feedback}`;
+}
+
+// Initial Load
+loadDashboard();
+    </script>
+</body>
+</html>

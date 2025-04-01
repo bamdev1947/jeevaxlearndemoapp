@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pronunciation Practice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-6 rounded-2xl shadow-2xl w-96 text-center border-4 border-yellow-400">
+        <h1 class="text-3xl font-extrabold text-purple-700 mb-4">🎤 Pronunciation Trainer 🎧</h1>
+        <select id="filterLetter" class="mb-4 p-2 border-2 border-blue-500 rounded-lg text-gray-700">
+            <option value="">Filter by Letter</option>
+        </select>
+        <button id="sortAZ" class="bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 shadow-md mb-4">Sort A-Z</button>
+        <div id="wordList" class="space-y-3">
+            <!-- Words will be inserted here -->
+        </div>
+        <div class="flex justify-between mt-6">
+            <button id="prevWords" class="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 shadow-md">⬅ Previous</button>
+            <button id="nextWords" class="bg-green-500 text-white px-4 py-2 rounded-xl hover:bg-green-600 shadow-md">Next ➡</button>
+        </div>
+    </div>
+
+    <script>
+        let words = [
+    // A
+    { word: "Abate", description: "To reduce in intensity", hindiDescription: "तीव्रता कम करना", synonyms: ["decrease", "lessen"], sentence: "The rain began to abate after hours." },
+    { word: "Adapt", description: "To adjust to new conditions", hindiDescription: "अनुकूलन करना", synonyms: ["adjust", "modify"], sentence: "She adapted quickly to the climate." },
+    { word: "Adept", description: "Highly skilled", hindiDescription: "निपुण", synonyms: ["expert", "proficient"], sentence: "He’s adept at solving puzzles." },
+    { word: "Adore", description: "To love deeply", hindiDescription: "प्यार करना", synonyms: ["cherish", "worship"], sentence: "They adore their new puppy." },
+    { word: "Alert", description: "Quick to notice danger", hindiDescription: "सतर्क", synonyms: ["vigilant", "aware"], sentence: "The guard stayed alert all night." },
+    { word: "Ample", description: "More than enough", hindiDescription: "पर्याप्त", synonyms: ["sufficient", "plenty"], sentence: "We have ample time to prepare." },
+    { word: "Astonish", description: "To surprise greatly", hindiDescription: "आश्चर्यचकित करना", synonyms: ["amaze", "stun"], sentence: "Her talent astonished everyone." },
+    { word: "Attain", description: "To achieve or reach", hindiDescription: "प्राप्त करना", synonyms: ["gain", "accomplish"], sentence: "He attained his goals through effort." },
+    { word: "Avert", description: "To prevent or turn away", hindiDescription: "टालना", synonyms: ["avoid", "deflect"], sentence: "She averted a crisis with quick thinking." },
+    { word: "Awake", description: "Not asleep", hindiDescription: "जागना", synonyms: ["alert", "conscious"], sentence: "He stayed awake to finish the task." },
+]
+
+
+        let currentIndex = 0;
+        let filteredWords = [...words];
+
+        function populateFilterOptions() {
+            const letters = new Set(words.map(word => word.word.charAt(0).toUpperCase()));
+            const filterSelect = document.getElementById("filterLetter");
+            letters.forEach(letter => {
+                const option = document.createElement("option");
+                option.value = letter;
+                option.textContent = letter;
+                filterSelect.appendChild(option);
+            });
+        }
+
+        function generateWordButtons() {
+            const wordList = document.getElementById("wordList");
+            wordList.innerHTML = "";
+            for (let i = currentIndex; i < currentIndex + 5 && i < filteredWords.length; i++) {
+                const entry = filteredWords[i];
+                const div = document.createElement("div");
+                div.className = "bg-yellow-200 p-3 rounded-lg shadow-md border-2 border-yellow-400 text-left";
+                
+                const wordText = document.createElement("div");
+                wordText.className = "text-lg font-semibold text-purple-700 flex justify-between items-center";
+                wordText.innerHTML = `${entry.word} <button class='text-xl text-blue-500 hover:text-blue-700 transition-transform transform hover:scale-110' onclick='speakWord("${entry.word}")'>🔊</button>`;
+                
+                const meaningText = document.createElement("p");
+                meaningText.className = "text-sm text-gray-700 mt-1";
+                meaningText.textContent = entry.word;
+                
+                div.appendChild(wordText);
+                div.appendChild(meaningText);
+                wordList.appendChild(div);
+            }
+        }
+
+        function speakWord(word) {
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.lang = "en-US";
+            speechSynthesis.speak(utterance);
+        }
+
+        document.getElementById("prevWords").addEventListener("click", () => {
+            if (currentIndex >= 5) {
+                currentIndex -= 5;
+                generateWordButtons();
+            }
+        });
+
+        document.getElementById("nextWords").addEventListener("click", () => {
+            if (currentIndex + 5 < filteredWords.length) {
+                currentIndex += 5;
+                generateWordButtons();
+            }
+        });
+
+        document.getElementById("sortAZ").addEventListener("click", () => {
+            filteredWords.sort((a, b) => a.word.localeCompare(b.word));
+            currentIndex = 0;
+            generateWordButtons();
+        });
+
+        document.getElementById("filterLetter").addEventListener("change", (event) => {
+            const selectedLetter = event.target.value;
+            if (selectedLetter) {
+                filteredWords = words.filter(word => word.word.startsWith(selectedLetter.toUpperCase()));
+            } else {
+                filteredWords = [...words];
+            }
+            currentIndex = 0;
+            generateWordButtons();
+        });
+
+        populateFilterOptions();
+        generateWordButtons();
+    </script>
+</body>
+</html>

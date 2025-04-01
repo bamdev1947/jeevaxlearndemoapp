@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Root Words Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let rootWords = [
+  { "word": "BIO", "meaning": "Life", "examples": ["Biology", "Biography", "Biodegradable"] },
+  { "word": "AUTO", "meaning": "Self", "examples": ["Autonomous", "Autograph", "Automatic"] },
+ 
+]
+;
+            
+            let currentPage = 0;
+            const itemsPerPage = 5;
+            const resultDiv = document.getElementById("result");
+            const prevBtn = document.getElementById("prev");
+            const nextBtn = document.getElementById("next");
+            const filterDropdown = document.getElementById("filter");
+            
+            function renderPage(page, filteredWords = rootWords) {
+                resultDiv.innerHTML = "";
+                const start = page * itemsPerPage;
+                const end = start + itemsPerPage;
+                const wordsToShow = filteredWords.slice(start, end);
+                wordsToShow.forEach(({ word, meaning, examples }) => {
+                    resultDiv.innerHTML += `
+                        <div class='w-full max-w-md bg-white shadow-lg rounded-lg p-5 mt-4'>
+                            <h2 class='text-xl font-bold text-blue-600'>${word}</h2>
+                            <p class='text-gray-700'>Meaning: ${meaning}</p>
+                            <p class='text-gray-700'>Examples: ${examples.join(", ")}</p>
+                        </div>
+                    `;
+                });
+                prevBtn.disabled = page === 0;
+                nextBtn.disabled = end >= filteredWords.length;
+            }
+            
+            prevBtn.addEventListener("click", () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    renderPage(currentPage);
+                }
+            });
+            
+            nextBtn.addEventListener("click", () => {
+                if ((currentPage + 1) * itemsPerPage < rootWords.length) {
+                    currentPage++;
+                    renderPage(currentPage);
+                }
+            });
+            
+            filterDropdown.addEventListener("change", (event) => {
+                const letter = event.target.value;
+                if (letter === "all") {
+                    renderPage(0, rootWords);
+                } else {
+                    const filteredWords = rootWords.filter(wordObj => wordObj.word.startsWith(letter));
+                    renderPage(0, filteredWords);
+                }
+                currentPage = 0;
+            });
+            
+            renderPage(currentPage);
+        });
+    </script>
+</head>
+<body class="bg-gray-100 h-screen flex items-center justify-center flex-col p-5">
+    <h1 class="text-3xl font-bold mb-5">Learn Root Words</h1>
+    <select id="filter" class="p-3 mb-5 bg-white border rounded shadow">
+        <option value="all">All</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+        <option value="E">E</option>
+        <option value="F">F</option>
+        <option value="G">G</option>
+        <option value="H">H</option>
+        <option value="I">I</option>
+        <option value="J">J</option>
+        <option value="K">K</option>
+        <option value="L">L</option>
+        <option value="M">M</option>
+        <option value="N">N</option>
+        <option value="O">O</option>
+        <option value="P">P</option>
+        <option value="Q">Q</option>
+        <option value="R">R</option>
+        <option value="S">S</option>
+        <option value="T">T</option>
+        <option value="U">U</option>
+        <option value="V">V</option>
+        <option value="W">W</option>
+        <option value="X">X</option>
+        <option value="Y">Y</option>
+        <option value="Z">Z</option>
+    </select>
+    <div id="result" class="w-full max-w-md"></div>
+    <div class="mt-5 flex space-x-4">
+        <button id="prev" class="p-3 bg-blue-500 text-white rounded shadow disabled:opacity-50">Previous</button>
+        <button id="next" class="p-3 bg-blue-500 text-white rounded shadow disabled:opacity-50">Next</button>
+        <button class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">        <a href="index.html" class="back-button">Home</a>
+
+    </div>
+</body>
+</html>
